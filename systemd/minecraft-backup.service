@@ -1,0 +1,6 @@
+[Unit]
+Description=Minecraft Backup
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/minecraft-backup.sh
