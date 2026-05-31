@@ -1,0 +1,23 @@
+#!/bin/bash
+
+RCON_PASS='<RCON_PASSWORD>'
+
+mcrcon -H 127.0.0.1 -P 25575 -p "$RCON_PASS" "say Server restarts in 5 minutes!"
+sleep 240
+
+mcrcon -H 127.0.0.1 -P 25575 -p "$RCON_PASS" "say Server restarts in 1 minute!"
+sleep 50
+
+for i in {10..1}
+do
+  mcrcon -H 127.0.0.1 -P 25575 -p "$RCON_PASS" "say Server restarts in $i seconds!"
+  sleep 1
+done
+
+mcrcon -H 127.0.0.1 -P 25575 -p "$RCON_PASS" "save-all"
+mcrcon -H 127.0.0.1 -P 25575 -p "$RCON_PASS" "save-all flush"
+
+mcrcon -H 127.0.0.1 -P 25575 -p "$RCON_PASS" "say Restart now!"
+sleep 2
+
+systemctl restart minecraft

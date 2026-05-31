@@ -1,0 +1,6 @@
+[Unit]
+Description=Safe Restart Minecraft Server
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/minecraft-safe-restart.sh
