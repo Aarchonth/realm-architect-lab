@@ -1,9 +1,12 @@
-[Unit]
-Description=Daily Minecraft Backup
+#!/bin/bash
 
-[Timer]
-OnCalendar=*-*-* 02:00:00
-Persistent=true
+DATE=$(date +"%Y-%m-%d_%H-%M")
 
-[Install]
-WantedBy=timers.target
+mcrcon -H 127.0.0.1 -P 25575 -p '<RCON_PASSWORD>' "save-all flush"
+
+sleep 3
+
+tar -czf /srv/backups/minecraft/minecraft-$DATE.tar.gz \
+/srv/games/minecraft
+
+find /srv/backups/minecraft -name "*.tar.gz" -mtime +14 -delete
