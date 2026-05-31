@@ -13,7 +13,7 @@ Internet
    |
    | DDNS
    v
-Speedport Router
+Edge Router / Home Gateway
    |
    | Port Forwarding
    | - WireGuard UDP 51820
