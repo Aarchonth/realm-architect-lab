@@ -18,6 +18,15 @@ This repository documents the setup of a Debian-based homelab focused on secure 
 - Portainer
 - Nginx webserver test page
 
+## Documentation
+
+- [Architecture](docs/architecture.md)
+- [Networking](docs/networking.md)
+- [SSH Hardening](docs/ssh-hardening.md)
+- [Backup Strategy](docs/backups.md)
+- [Docker](docs/docker.md)
+- [Monitoring](docs/monitoring.md)
+
 ## Project Goal
 
 The goal of this project is to build and document a professional self-hosted infrastructure lab around game server hosting and Linux administration.
