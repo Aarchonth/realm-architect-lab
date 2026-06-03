@@ -163,6 +163,61 @@ sudo tar -xzf /srv/backups/minecraft/<BACKUP_FILE>.tar.gz -C /
 sudo systemctl start minecraft
 ```
 
+## Restore Test
+
+A non-destructive restore test was performed to verify that the backup archive can be extracted successfully.
+
+The backup was not restored directly into the live Minecraft server directory. Instead, it was extracted into a separate test directory.
+
+Test directory:
+
+```text
+/srv/backups/Testdirectory
+```
+
+Test command pattern:
+
+```bash
+sudo mkdir -p /srv/backups/Testdirectory
+sudo tar -xzf /srv/backups/minecraft/<BACKUP_FILE>.tar.gz -C /srv/backups/Testdirectory
+```
+
+Because the backup archive was created from an absolute path, the extracted structure inside the test directory looked like this:
+
+```text
+/srv/backups/Testordner/srv/games/minecraft
+```
+
+The following files and directories were verified after extraction:
+
+```text
+world/
+server.properties
+server.jar
+ops.json
+whitelist.json
+logs/
+libraries/
+versions/
+```
+
+This confirms that the backup archive contains the full Minecraft server directory and can be extracted successfully.
+
+After verification, the temporary restore test directory can be removed:
+
+```bash
+sudo rm -rf /srv/backups/Testdirectory
+```
+
+### Result
+
+The restore test was successful.
+
+The backup archive could be extracted into a safe test directory, and the expected Minecraft server files were present.
+
+This verifies that the backup process produces usable restore data.
+
+
 ## Important Notes
 
 Backups currently live on the same physical machine as the Minecraft server.
