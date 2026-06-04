@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Realm Architect Minecraft</title>
+
+  <link rel="stylesheet" href="css/style.css?v=3" />
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <a class="brand" href="index.html">Realm Architect Lab</a>
+
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="https://github.com/Aarchonth/realm-architect-lab" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </div>
+</nav>
+
+  </header>
+
+  <main>
+    <section class="minecraft-hero">
+      <div class="minecraft-hero-overlay"></div>
+
+  <div class="minecraft-hero-content">
+    <img class="server-icon large" src="assets/server-icon.png" alt="Minecraft server icon" />
+
+    <p class="eyebrow">Self-Hosted Minecraft Server</p>
+
+    <h1>Realm Architect Minecraft</h1>
+
+    <p>
+      A private Minecraft server hosted on the Realm Architect Lab infrastructure.
+    </p>
+
+    <div class="address-panel">
+      <span>Server Address</span>
+
+      <div class="copy-row">
+        <code id="server-address">mc.realm-architect.dev</code>
+        <button class="button primary small" onclick="copyServerAddress()">Copy</button>
+      </div>
+
+      <small>No port required. DNS SRV routing is configured.</small>
+    </div>
+
+    <div class="button-row centered">
+      <a class="button secondary" href="index.html">Back to Lab</a>
+      <a class="button primary" href="https://github.com/Aarchonth/realm-architect-lab" target="_blank" rel="noopener noreferrer">
+        View Infrastructure ↗
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-heading">
+    <p class="eyebrow">Behind the Server</p>
+    <h2>Hosted like a real service</h2>
+  </div>
+
+  <div class="cards">
+    <article class="card">
+      <h3>Linux Service</h3>
+      <p>
+        Minecraft runs as a managed systemd service on Debian.
+      </p>
+    </article>
+
+    <article class="card">
+      <h3>Backups</h3>
+      <p>
+        The world and server files are backed up automatically.
+      </p>
+    </article>
+
+    <article class="card">
+      <h3>Safe Restarts</h3>
+      <p>
+        RCON is used for world saves and player warnings before restarts.
+      </p>
+    </article>
+
+    <article class="card">
+      <h3>Clean DNS</h3>
+      <p>
+        Players can join through mc.realm-architect.dev without entering a port.
+      </p>
+    </article>
+  </div>
+</section>
+
+  </main>
+
+  <footer class="footer">
+    <p>Realm Architect Minecraft · Hosted on Realm Architect Lab</p>
+  </footer>
+
+  <script>
+    function copyServerAddress() {
+      const address = document.getElementById("server-address").innerText;
+
+      navigator.clipboard.writeText(address).then(function () {
+        alert("Server address copied: " + address);
+      });
+    }
+  </script>
+
+</body>
+</html>

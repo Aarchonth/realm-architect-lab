@@ -1,76 +1,163 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Realm Architect Lab</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #111827;
-      color: #f9fafb;
-      padding: 40px;
-      line-height: 1.6;
-    }
 
-    .card {
-      max-width: 850px;
-      margin: auto;
-      background: #1f2937;
-      padding: 32px;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
-
-    h1 {
-      color: #60a5fa;
-    }
-
-    .status {
-      color: #34d399;
-      font-weight: bold;
-    }
-
-    code {
-      background: #374151;
-      padding: 2px 6px;
-      border-radius: 6px;
-    }
-  </style>
+  <link rel="stylesheet" href="css/style.css?v=3" />
 </head>
 <body>
-  <div class="card">
+  <header class="site-header">
+    <nav class="nav">
+      <a class="brand" href="index.html">Realm Architect Lab</a>
+
+  <div class="nav-links">
+    <a href="minecraft.html">Minecraft</a>
+    <a href="https://github.com/Aarchonth/realm-architect-lab" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </div>
+</nav>
+
+  </header>
+
+  <main>
+    <section class="hero layout-grid">
+      <div class="hero-content">
+        <p class="eyebrow">Self-Hosted Infrastructure Lab</p>
+
     <h1>Realm Architect Lab</h1>
 
-    <p class="status">Status: Online</p>
-
-    <p>
-      This is a self-hosted infrastructure lab running on a Debian server.
+    <p class="hero-text">
+      A self-hosted infrastructure lab for learning Linux, networking,
+      automation and service hosting.
     </p>
 
-    <h2>Current Stack</h2>
-    <ul>
-      <li>Debian Linux Server</li>
-      <li>SSH Key Authentication</li>
-      <li>WireGuard VPN</li>
-      <li>DDNS</li>
-      <li>Minecraft systemd Service</li>
-      <li>Automated Backups</li>
-      <li>Automated Restarts</li>
-      <li>Docker</li>
-      <li>Uptime Kuma Monitoring</li>
-      <li>Portainer</li>
-      <li>Nginx Webserver</li>
-    </ul>
-
-    <h2>Goal</h2>
-    <p>
-      Build and document a professional self-hosted game server infrastructure
-      as a portfolio project for Linux, networking, Docker, monitoring and automation.
+    <p class="hero-subtext">
+      Currently powering a Minecraft server, public HTTPS site, VPN access,
+      monitoring, backups, Dynamic DNS and Docker-based services.
     </p>
 
+    <div class="button-row">
+      <a class="button primary" href="https://github.com/Aarchonth/realm-architect-lab" target="_blank" rel="noopener noreferrer">
+        View GitHub Repository ↗
+      </a>
+
+      <a class="button secondary" href="minecraft.html">
+        Minecraft Server
+      </a>
+    </div>
+  </div>
+
+  <aside class="hero-card">
+    <div class="status-row">
+      <span class="status-dot"></span>
+      <span>Online</span>
+    </div>
+
+    <h2>Live Project</h2>
+
     <p>
-      Project identity: <code>realm-architect-lab</code>
+      Running on a self-managed Debian server with custom domain routing and HTTPS.
+    </p>
+
+    <div class="endpoint-list">
+      <div>
+        <span>Lab</span>
+        <code>lab.realm-architect.dev</code>
+      </div>
+
+      <div>
+        <span>Minecraft</span>
+        <code>mc.realm-architect.dev</code>
+      </div>
+    </div>
+  </aside>
+</section>
+
+<section class="section">
+  <div class="section-heading">
+    <p class="eyebrow">Infrastructure</p>
+    <h2>What this project demonstrates</h2>
+  </div>
+
+  <div class="cards">
+    <article class="card">
+      <h3>Linux Server</h3>
+      <p>
+        Debian, systemd services and practical Linux administration.
+      </p>
+    </article>
+
+    <article class="card">
+      <h3>Secure Access</h3>
+      <p>
+        VPN-only administration with SSH key authentication.
+      </p>
+    </article>
+
+    <article class="card">
+      <h3>Self-Hosted Services</h3>
+      <p>
+        Websites, Minecraft, monitoring tools and future internal services.
+      </p>
+    </article>
+
+    <article class="card">
+      <h3>Automation & Reliability</h3>
+      <p>
+        Backups, safe restarts, Dynamic DNS and monitoring.
+      </p>
+    </article>
+  </div>
+</section>
+
+<section class="section minecraft-preview">
+  <div class="minecraft-card">
+    <img class="server-icon" src="assets/server-icon.png" alt="Minecraft server icon" />
+
+    <div class="minecraft-card-content">
+      <p class="eyebrow">Minecraft Server</p>
+
+      <h2>Realm Architect Minecraft</h2>
+
+      <p>
+        A self-hosted Minecraft server powered by the same infrastructure lab.
+      </p>
+
+      <div class="server-address">
+        <span>Server Address</span>
+        <strong>mc.realm-architect.dev</strong>
+      </div>
+
+      <a class="button primary" href="minecraft.html">Open Server Page</a>
+    </div>
+  </div>
+</section>
+
+<section class="section github-section">
+  <div>
+    <p class="eyebrow">Open Build</p>
+
+    <h2>See the full setup</h2>
+
+    <p>
+      The GitHub repository documents the infrastructure, configs, decisions,
+      Docker services, systemd units, DNS setup, backups and monitoring.
     </p>
   </div>
+
+  <a class="button secondary" href="https://github.com/Aarchonth/realm-architect-lab" target="_blank" rel="noopener noreferrer">
+    Open GitHub Repository ↗
+  </a>
+</section>
+
+  </main>
+
+  <footer class="footer">
+    <p>Realm Architect Lab · Self-hosted infrastructure by Aaron</p>
+  </footer>
 </body>
 </html>
+
