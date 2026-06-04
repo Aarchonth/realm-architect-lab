@@ -2,178 +2,261 @@
 
 ## Overview
 
-Monitoring is used in the Realm Architect Lab to track whether important services are online and reachable.
+Monitoring is used in the Realm Architect Lab to observe service availability and detect outages early.
 
-The project currently uses Uptime Kuma as a lightweight self-hosted monitoring dashboard.
+The project uses Uptime Kuma as the main monitoring dashboard.
 
-Monitoring is important because running services is not enough. A server should also provide visibility into whether its services are actually available.
+Uptime Kuma runs as an internal Docker service and is intended to be accessed only through the local network or WireGuard VPN.
 
-## Monitoring Tool
+## Goal
 
-The monitoring service is deployed with Docker Compose.
+The goal of monitoring is to verify that important infrastructure components are reachable and working as expected.
 
-Tool:
+Monitoring helps answer questions such as:
 
-```text
-Uptime Kuma
-```
+* Is the Debian server reachable?
+* Is SSH available?
+* Is the Minecraft server online?
+* Is the public lab website reachable through HTTPS?
+* Does the public Minecraft domain resolve and connect correctly?
+* Are public DNS names pointing to the correct services?
 
-Docker Compose example:
+## Uptime Kuma
 
-```text
-docker/uptime-kuma/docker-compose.yml
-```
+Uptime Kuma is deployed with Docker Compose.
 
-Uptime Kuma provides a web dashboard for checking service availability and uptime history.
-
-## Monitored Services
-
-The current monitoring setup includes checks for:
-
-* Debian server availability
-* SSH service
-* Minecraft server
-* Nginx web lab
-
-## Debian Server Check
-
-The Debian server can be monitored with a ping check.
-
-Example:
+Repository path:
 
 ```text
-Type: Ping
-Host: 192.168.2.49
+docker/internal/uptime-kuma/
 ```
 
-This confirms that the server itself is reachable on the local network or through WireGuard VPN.
-
-## SSH Check
-
-SSH can be monitored with a TCP port check.
-
-Example:
+Server-side path:
 
 ```text
-Type: TCP Port
-Host: 192.168.2.49
-Port: 22
+/srv/docker/internal/uptime-kuma/
 ```
 
-This confirms that the SSH service is reachable.
+Uptime Kuma is treated as an internal administration service.
 
-SSH is not exposed directly to the public internet. Remote access is done through WireGuard VPN.
+It should not be exposed directly to the public internet.
 
-## Minecraft Check
-
-The Minecraft server can be monitored with a TCP port check.
-
-Example:
+Access should happen through:
 
 ```text
-Type: TCP Port
-Host: 192.168.2.49
-Port: 25565
+Local network
+WireGuard VPN
 ```
 
-This confirms that the Minecraft server port is reachable.
+## Current Monitoring Targets
 
-When the Minecraft service is stopped, Uptime Kuma marks the monitor as down.
+The current monitoring setup includes internal and public checks.
 
-When the service is started again, Uptime Kuma marks it as up.
+| Monitor            | Type              | Target                            | Purpose                                               |
+| ------------------ | ----------------- | --------------------------------- | ----------------------------------------------------- |
+| Debian Server      | Ping / Host check | `192.168.2.49`                    | Checks if the server is reachable inside the network  |
+| SSH Server         | TCP Port          | `192.168.2.49:22`                 | Checks if SSH is reachable internally                 |
+| Minecraft Server   | TCP Port          | `mc.realm-architect.dev:25566`    | Checks if the Minecraft server port is reachable      |
+| Public Lab Website | HTTP(s)           | `https://lab.realm-architect.dev` | Checks the full public HTTPS path                     |
+| Minecraft Domain   | TCP Port          | `mc.realm-architect.dev:25566`    | Checks the public Minecraft domain and forwarded port |
+| VPN DNS            | DNS               | `vpn.realm-architect.dev`         | Checks whether the VPN hostname resolves correctly    |
 
-## Nginx Web Lab Check
+## Public Website Monitoring
 
-The internal Nginx test webserver can be monitored with an HTTP check.
-
-Example:
+The public lab website is monitored through:
 
 ```text
-Type: HTTP(s)
-URL: http://192.168.2.49:8080
+https://lab.realm-architect.dev
 ```
 
-This confirms that the Docker-based Nginx webserver is responding.
+This check verifies the full public request path:
 
-## Access Model
+```text
+DNS
+   |
+   v
+Public IP
+   |
+   v
+Router Port Forwarding
+   |
+   v
+Nginx Reverse Proxy
+   |
+   v
+realm-architect-site Docker Container
+```
 
-The Uptime Kuma dashboard is intended to be accessed through:
+This is more valuable than only checking the internal container port because it confirms that the public HTTPS endpoint works from the outside.
 
-* local network
-* WireGuard VPN
+## Minecraft Monitoring
 
-It should not be exposed publicly without additional security measures such as HTTPS, authentication hardening, and reverse proxy configuration.
+The Minecraft server is reachable through:
 
-## Useful Docker Commands
+```text
+mc.realm-architect.dev
+```
 
-Check if the Uptime Kuma container is running:
+The public Minecraft service uses a Minecraft SRV record so that players do not need to manually enter the port.
+
+Internally, the public Minecraft port is:
+
+```text
+25566
+```
+
+A TCP port monitor can be used for:
+
+```text
+mc.realm-architect.dev:25566
+```
+
+This verifies that the public Minecraft endpoint is reachable.
+
+## VPN Monitoring
+
+WireGuard uses:
+
+```text
+vpn.realm-architect.dev
+```
+
+WireGuard runs on:
+
+```text
+UDP 51820
+```
+
+A normal TCP port monitor is not suitable for WireGuard because WireGuard does not listen on TCP.
+
+For this reason, the VPN endpoint is monitored through a DNS check instead.
+
+Recommended monitor:
+
+```text
+Type: DNS
+Hostname: vpn.realm-architect.dev
+Record Type: A
+Resolver: 1.1.1.1
+```
+
+This does not prove that WireGuard itself is working, but it verifies that the VPN hostname resolves correctly.
+
+A real WireGuard availability test would require a UDP-capable check or an external client test.
+
+## Internal vs Public Monitoring
+
+Internal checks verify local network availability.
+
+Examples:
+
+```text
+192.168.2.49
+192.168.2.49:22
+192.168.2.49:3001
+192.168.2.49:9443
+```
+
+Public checks verify the real external path.
+
+Examples:
+
+```text
+https://lab.realm-architect.dev
+mc.realm-architect.dev:25566
+vpn.realm-architect.dev DNS
+```
+
+Both types are useful.
+
+Internal monitoring helps detect local service failures.
+
+Public monitoring helps detect problems with DNS, router forwarding, HTTPS, reverse proxy configuration or public service availability.
+
+## Recommended Monitor Names
+
+Recommended Uptime Kuma monitor names:
+
+```text
+Debian Server
+SSH Server
+Public Lab Website
+Minecraft Server
+Minecraft Domain
+VPN DNS
+```
+
+Clear monitor names make the dashboard easier to understand later.
+
+## Useful Checks
+
+Check if Uptime Kuma is running:
 
 ```bash
 docker ps
 ```
 
-View Uptime Kuma logs:
+Check Uptime Kuma logs:
 
 ```bash
-docker logs uptime-kuma
+cd /srv/docker/internal/uptime-kuma
+docker compose logs
 ```
 
-Restart Uptime Kuma:
+Check the public lab website manually:
 
 ```bash
-docker restart uptime-kuma
+curl -I https://lab.realm-architect.dev
 ```
 
-Start Uptime Kuma from the Compose directory:
+Check the Minecraft public port:
 
 ```bash
-cd /srv/docker/uptime-kuma
-docker compose up -d
+nc -vz mc.realm-architect.dev 25566
 ```
 
-Stop Uptime Kuma from the Compose directory:
+Check DNS resolution:
 
 ```bash
-cd /srv/docker/uptime-kuma
-docker compose down
+nslookup vpn.realm-architect.dev
+nslookup mc.realm-architect.dev
+nslookup lab.realm-architect.dev
 ```
 
-## Why Monitoring Matters
+Check the current public IP:
 
-Monitoring helps detect problems early.
+```bash
+curl -4 ifconfig.me
+```
 
-Without monitoring, a service can be offline for hours or days before anyone notices.
+## Security Notes
 
-With monitoring, service failures become visible immediately through a dashboard.
+Uptime Kuma contains information about internal services and infrastructure.
 
-This is especially useful for:
+It should not be exposed publicly without a strong authentication and access-control concept.
 
-* game server hosting
-* remote administration
-* web services
-* Docker containers
-* future public services
-
-## Current Result
-
-The current monitoring setup provides visibility into the health of the main infrastructure components:
+Current design decision:
 
 ```text
-Debian Server  -> monitored
-SSH            -> monitored
-Minecraft      -> monitored
-Nginx Web Lab  -> monitored
+Uptime Kuma stays private.
+Access only through LAN or WireGuard VPN.
+```
+
+Public users should only see intentionally exposed services such as:
+
+```text
+lab.realm-architect.dev
+mc.realm-architect.dev
 ```
 
 ## Future Improvements
 
-Planned improvements:
+Planned monitoring improvements:
 
 * add notification alerts
-* add Discord notifications
-* add email notifications
-* monitor disk usage
-* monitor backup success
-* monitor Docker containers
-* create a public status page
-* add HTTPS reverse proxy monitoring
+* add public HTTPS certificate expiry monitoring
+* add DNS checks for all important subdomains
+* add backup freshness monitoring
+* add Minecraft process or RCON-based status checks
+* add external monitoring from outside the home network
+* document alerting rules and response steps
