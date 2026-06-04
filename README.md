@@ -77,10 +77,34 @@ Debian Server
 | [Backup Strategy](docs/backups.md)     | Automated backups and restore testing                    |
 | [Docker](docs/docker.md)               | Container services and Compose structure                 |
 | [Monitoring](docs/monitoring.md)       | Uptime Kuma checks and service visibility                |
+| [Reverse Proxy](docs/reverse-proxy.md) | Raw Nginx reverse proxy and HTTPS setup                  |
 
 ## Configuration Examples
 
 This repository includes example configuration files for the main infrastructure components.
+
+### systemd Examples
+
+| Area | Path | Purpose |
+|---|---|---|
+| Minecraft | [`systemd/minecraft/`](systemd/minecraft/) | Minecraft service, backup timer and safe restart automation |
+| IONOS DDNS | [`systemd/ionos-ddns/`](systemd/ionos-ddns/) | Dynamic DNS update service and timer |
+
+### Docker Compose Examples
+
+| Area | Path | Purpose |
+|---|---|---|
+| Internal Services | [`docker/internal/`](docker/internal/) | Private admin services such as Uptime Kuma and Portainer |
+| Public Services | [`docker/public/`](docker/public/) | Public-facing services such as the Realm Architect site |
+| Client Services | [`docker/clients/`](docker/clients/) | Future client or demo website deployments |
+
+### Current Docker Services
+
+| Service | Path | Purpose |
+|---|---|---|
+| Uptime Kuma | [`docker/internal/uptime-kuma/`](docker/internal/uptime-kuma/) | Monitoring dashboard |
+| Portainer | [`docker/internal/portainer/`](docker/internal/portainer/) | Docker management interface |
+| Realm Architect Site | [`docker/public/realm-architect-site/`](docker/public/realm-architect-site/) | Public lab landing page |
 
 ### systemd Examples
 
@@ -91,11 +115,27 @@ This repository includes example configuration files for the main infrastructure
 
 ### Docker Compose Examples
 
-| Service              | Path                                         | Purpose                     |
-| -------------------- | -------------------------------------------- | --------------------------- |
-| Uptime Kuma          | [`docker/uptime-kuma/`](docker/uptime-kuma/) | Monitoring dashboard        |
-| Portainer            | [`docker/portainer/`](docker/portainer/)     | Docker management interface |
-| Nginx Test Webserver | [`docker/nginx-test/`](docker/nginx-test/)   | Static webserver test page  |
+Docker services are organized by responsibility.
+
+| Area              | Path                                   | Purpose                                   |
+| ----------------- | -------------------------------------- | ----------------------------------------- |
+| Internal Services | [`docker/internal/`](docker/internal/) | Private admin and monitoring services     |
+| Public Services   | [`docker/public/`](docker/public/)     | Public-facing services owned by the lab   |
+| Client Services   | [`docker/clients/`](docker/clients/)   | Future client or demo website deployments |
+
+Current Docker service examples:
+
+| Service              | Path                                                                         | Purpose                                                 |
+| -------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------- |
+| Uptime Kuma          | [`docker/internal/uptime-kuma/`](docker/internal/uptime-kuma/)               | Internal monitoring dashboard                           |
+| Portainer            | [`docker/internal/portainer/`](docker/internal/portainer/)                   | Internal Docker management interface                    |
+| Realm Architect Site | [`docker/public/realm-architect-site/`](docker/public/realm-architect-site/) | Public lab landing page served behind the reverse proxy |
+
+### Nginx Examples
+
+| Area          | Path                                               | Purpose                                                               |
+| ------------- | -------------------------------------------------- | --------------------------------------------------------------------- |
+| Reverse Proxy | [`nginx/sites-available/`](nginx/sites-available/) | Example raw Nginx reverse proxy configuration for the public lab site |
 
 
 ## What I Learned
@@ -141,8 +181,8 @@ This lab is designed as a long-term portfolio project for learning and demonstra
 * [x] Uptime Kuma monitoring
 * [x] Portainer
 * [x] Nginx test webserver
-* [ ] Reverse proxy with HTTPS
-* [ ] Public portfolio/status page
+* [x] Reverse proxy with HTTPS
+* [x] Public portfolio/status page
 * [ ] Backup storage on a second disk
 * [ ] Docker-based Minecraft test server
 * [ ] Basic server provisioning panel concept
