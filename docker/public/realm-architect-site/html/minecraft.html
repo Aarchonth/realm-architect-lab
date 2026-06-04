@@ -24,6 +24,25 @@
 
   <main>
     <section class="minecraft-hero">
+<section class="section">
+  <div class="minecraft-status-panel">
+    <div>
+      <p class="eyebrow">Live Server Status</p>
+      <h2 id="minecraft-status-title">Checking Minecraft...</h2>
+      <p id="minecraft-status-text">Fetching live player status from the Realm Architect API.</p>
+    </div>
+
+    <div class="player-count">
+      <span id="minecraft-player-count">-- / --</span>
+      <small>Current Players</small>
+    </div>
+  </div>
+
+  <div class="player-list-card">
+    <h3>Online Players</h3>
+    <p id="minecraft-player-list">Loading...</p>
+  </div>
+</section>
       <div class="minecraft-hero-overlay"></div>
 
   <div class="minecraft-hero-content">
@@ -110,5 +129,7 @@
     }
   </script>
 
+
+<script src="js/app.js?v=3"></script>
 </body>
 </html>

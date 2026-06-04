@@ -164,6 +164,7 @@ Minecraft systemd Service
 | [Backup Strategy](docs/backups.md)     | Automated backups and restore testing                    |
 | [Docker](docs/docker.md)               | Container services and Compose structure                 |
 | [Monitoring](docs/monitoring.md)       | Uptime Kuma checks and service visibility                |
+| [Backend API](docs/backend.md) | ASP.NET Core API, live service status and Minecraft player status |
 
 ## Configuration Examples
 
@@ -175,6 +176,7 @@ This repository includes example configuration files for the main infrastructure
 | ---------- | -------------------------------------------- | ----------------------------------------------------------- |
 | Minecraft  | [`systemd/minecraft/`](systemd/minecraft/)   | Minecraft service, backup timer and safe restart automation |
 | IONOS DDNS | [`systemd/ionos-ddns/`](systemd/ionos-ddns/) | Dynamic DNS update service and timer                        |
+| Backend API | [`systemd/backend/`](systemd/backend/) | ASP.NET Core backend API service |
 
 ### Docker Compose Examples
 
@@ -280,11 +282,14 @@ The lab is designed as a long-term portfolio project for learning and demonstrat
 * [x] Raw Nginx reverse proxy
 * [x] HTTPS with Certbot
 * [x] Dedicated Minecraft page
-* [ ] Public HTTPS monitoring in Uptime Kuma
+* [x] Public HTTPS monitoring in Uptime Kuma
 * [ ] Reverse proxy documentation review
 * [ ] Backup storage on a second disk
 * [ ] Docker-based Minecraft test server
-* [ ] Basic backend health API
+* [x] Basic backend health API
+* [x] Live service status API
+* [x] Minecraft player status API
+* [x] Frontend API integration
 * [ ] Minecraft whitelist request concept
 * [ ] Basic server provisioning panel concept
 

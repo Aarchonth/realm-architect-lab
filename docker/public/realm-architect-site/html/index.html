@@ -51,29 +51,45 @@
   </div>
 
   <aside class="hero-card">
-    <div class="status-row">
-      <span class="status-dot"></span>
-      <span>Online</span>
+  <div class="status-row">
+    <span class="status-dot" id="api-status-dot"></span>
+    <span id="api-status-label">Checking API...</span>
+  </div>
+
+  <h2>Live Project</h2>
+
+  <p>
+    Running on a self-managed Debian server with custom domain routing and HTTPS.
+  </p>
+
+  <div class="endpoint-list">
+    <div>
+      <span>Lab</span>
+      <code>lab.realm-architect.dev</code>
     </div>
 
-    <h2>Live Project</h2>
-
-    <p>
-      Running on a self-managed Debian server with custom domain routing and HTTPS.
-    </p>
-
-    <div class="endpoint-list">
-      <div>
-        <span>Lab</span>
-        <code>lab.realm-architect.dev</code>
-      </div>
-
-      <div>
-        <span>Minecraft</span>
-        <code>mc.realm-architect.dev</code>
-      </div>
+    <div>
+      <span>Minecraft</span>
+      <code>mc.realm-architect.dev</code>
     </div>
-  </aside>
+
+    <div>
+      <span>Backend API</span>
+      <code id="api-service">loading...</code>
+    </div>
+
+    <div>
+      <span>Environment</span>
+      <code id="api-environment">loading...</code>
+    </div>
+
+    <div>
+      <span>Last API Check</span>
+      <code id="api-last-check">loading...</code>
+    </div>
+  </div>
+</aside>
+
 </section>
 
 <section class="section">
@@ -81,6 +97,8 @@
     <p class="eyebrow">Infrastructure</p>
     <h2>What this project demonstrates</h2>
   </div>
+
+
 
   <div class="cards">
     <article class="card">
@@ -109,6 +127,20 @@
       <p>
         Backups, safe restarts, Dynamic DNS and monitoring.
       </p>
+    </article>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-heading">
+    <p class="eyebrow">Live Status</p>
+    <h2>Current service status</h2>
+  </div>
+
+  <div class="service-grid" id="services-grid">
+    <article class="card">
+      <h3>Loading services...</h3>
+      <p>Fetching live status from the Realm Architect API.</p>
     </article>
   </div>
 </section>
@@ -158,6 +190,9 @@
   <footer class="footer">
     <p>Realm Architect Lab · Self-hosted infrastructure by Aaron</p>
   </footer>
+
+<script src="js/app.js?v=1"></script>
+
 </body>
 </html>
 

@@ -1,0 +1,16 @@
+[Unit]
+Description=Realm Architect API
+After=network.target
+
+[Service]
+WorkingDirectory=/srv/apps/realm-architect-api/publish
+ExecStart=/usr/local/bin/dotnet /srv/apps/realm-architect-api/publish/realm-architect-api.dll
+Restart=always
+RestartSec=5
+User=adminaaron
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=DOTNET_ROOT=/opt/dotnet
+EnvironmentFile=/etc/realm-architect/api.env
+
+[Install]
+WantedBy=multi-user.target
