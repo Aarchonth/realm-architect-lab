@@ -4,7 +4,7 @@
 
 Docker is used in the Realm Architect Lab to run supporting infrastructure services in isolated containers.
 
-The main Minecraft server currently runs as a native systemd service, while Docker is used for additional services such as monitoring, container management, and webserver testing.
+The main Minecraft server currently runs as a native systemd service, while Docker is used for additional services such as monitoring, container management, and public web services.
 
 ## Why Docker Is Used
 
@@ -16,7 +16,8 @@ Benefits:
 * reproducible deployments
 * easier cleanup
 * simple service updates
-* clear separation between host system and applications
+* clear separation between the host system and applications
+* organized service deployment with Docker Compose
 
 ## Core Concepts
 
@@ -37,12 +38,12 @@ A container is a running instance of an image.
 Examples:
 
 ```text
-nginx-test
+realm-architect-site
 uptime-kuma
 portainer
 ```
 
-### Volume
+### Volume / Bind Mount
 
 A volume or bind mount stores persistent data outside the container.
 
@@ -61,6 +62,28 @@ Docker Compose is used to define services in a `docker-compose.yml` file.
 
 This makes services easier to reproduce, update, document, and move between systems.
 
+## Service Responsibility Structure
+
+Docker services are organized by responsibility.
+
+```text
+docker/
+├── internal/
+│   ├── uptime-kuma/
+│   └── portainer/
+├── public/
+│   └── realm-architect-site/
+└── clients/
+```
+
+This separation makes the infrastructure easier to understand and maintain.
+
+| Area        | Purpose                                   |
+| ----------- | ----------------------------------------- |
+| `internal/` | Private admin and monitoring services     |
+| `public/`   | Public-facing services owned by the lab   |
+| `clients/`  | Future client or demo website deployments |
+
 ## Current Docker Services
 
 ### Uptime Kuma
@@ -70,7 +93,7 @@ Uptime Kuma is used for monitoring service availability.
 Repository example:
 
 ```text
-docker/uptime-kuma/docker-compose.yml
+docker/internal/uptime-kuma/docker-compose.yml
 ```
 
 It monitors services such as:
@@ -78,7 +101,10 @@ It monitors services such as:
 * Debian server availability
 * SSH
 * Minecraft server
-* Nginx web lab
+* internal web services
+* future public HTTPS endpoints
+
+Uptime Kuma is an internal service and should only be accessed through the local network or WireGuard VPN.
 
 ### Portainer
 
@@ -87,22 +113,38 @@ Portainer provides a web interface for managing Docker containers, images, volum
 Repository example:
 
 ```text
-docker/portainer/docker-compose.yml
+docker/internal/portainer/docker-compose.yml
 ```
 
 Portainer is useful for visualizing Docker resources and learning how containers, images, volumes, and networks relate to each other.
 
-### Nginx Test Webserver
+Portainer is an internal administration tool and should not be exposed directly to the public internet.
 
-Nginx is used as a simple test webserver for serving a static HTML page.
+### Realm Architect Site
+
+The Realm Architect Site is the public-facing lab landing page.
 
 Repository example:
 
 ```text
-docker/nginx-test/docker-compose.yml
+docker/public/realm-architect-site/docker-compose.yml
 ```
 
+This service is based on Nginx and serves a static HTML page.
+
 The local `html` directory is mounted into the Nginx container as the web root.
+
+The site currently listens internally on:
+
+```text
+127.0.0.1:8080
+```
+
+A reverse proxy will later expose it publicly through:
+
+```text
+https://lab.realm-architect.dev
+```
 
 ## Useful Commands
 
@@ -154,18 +196,21 @@ Remove stopped test containers:
 docker container prune
 ```
 
-## Project Structure
+## Example Server-Side Directory Layout
 
-Docker service examples are stored in:
+On the Debian server, Docker services are organized under:
 
 ```text
-docker/
-├── nginx-test/
-├── portainer/
-└── uptime-kuma/
+/srv/docker/
+├── internal/
+│   ├── uptime-kuma/
+│   └── portainer/
+├── public/
+│   └── realm-architect-site/
+└── clients/
 ```
 
-Each service contains its own `docker-compose.yml` file.
+This mirrors the repository structure and keeps services grouped by responsibility.
 
 ## Design Decision
 
@@ -173,7 +218,7 @@ The main Minecraft server is currently not containerized.
 
 It runs as a systemd service because this provides direct control, simple logging through `journalctl`, and a good learning path for Linux service management.
 
-Docker is currently used for supporting infrastructure services.
+Docker is currently used for supporting infrastructure services and web services.
 
 Future Minecraft test servers may be deployed in Docker to explore automated game server provisioning.
 
@@ -181,7 +226,7 @@ Future Minecraft test servers may be deployed in Docker to explore automated gam
 
 Docker management interfaces should not be exposed publicly without proper authentication, HTTPS, and access control.
 
-Portainer is currently intended to be accessed through the local network or WireGuard VPN.
+Portainer and Uptime Kuma are currently intended to be accessed through the local network or WireGuard VPN.
 
 Sensitive values should not be committed to GitHub.
 
@@ -192,14 +237,15 @@ Examples of sensitive values:
 * private keys
 * database credentials
 * production secrets
+* Dynamic DNS update URLs
 
 ## Future Improvements
 
 Planned Docker-related improvements:
 
-* add reverse proxy
-* add HTTPS support
-* add additional monitoring targets
+* add raw Nginx reverse proxy
+* add HTTPS support with Certbot
+* monitor public HTTPS endpoints
 * create a Docker-based Minecraft test server
 * experiment with automated container provisioning
 * document container backup strategies
