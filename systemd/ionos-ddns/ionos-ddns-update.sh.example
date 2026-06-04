@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+
+source /etc/realm-architect/ionos-ddns.env
+
+if [ -z "$IONOS_DDNS_UPDATE_URL" ]; then
+echo "IONOS_DDNS_UPDATE_URL is not set."
+exit 1
+fi
+
+curl -fsS "$IONOS_DDNS_UPDATE_URL" >/dev/null
+
+echo "IONOS Dynamic DNS update completed."
