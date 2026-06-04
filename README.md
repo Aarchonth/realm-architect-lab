@@ -68,14 +68,35 @@ Debian Server
 
 ## Documentation
 
-| Topic                                  | Description                                |
-| -------------------------------------- | ------------------------------------------ |
-| [Architecture](docs/architecture.md)   | High-level infrastructure overview         |
-| [Networking](docs/networking.md)       | LAN, DDNS, VPN and port forwarding design  |
-| [SSH Hardening](docs/ssh-hardening.md) | Key-based login and SSH security decisions |
-| [Backup Strategy](docs/backups.md)     | Automated backups and restore testing      |
-| [Docker](docs/docker.md)               | Container services and Compose structure   |
-| [Monitoring](docs/monitoring.md)       | Uptime Kuma checks and service visibility  |
+| Topic                                  | Description                                              |
+| -------------------------------------- | -------------------------------------------------------- |
+| [Architecture](docs/architecture.md)   | High-level infrastructure overview                       |
+| [Networking](docs/networking.md)       | LAN, VPN and port forwarding design                      |
+| [Domain and DNS](docs/domain-dns.md)   | Custom domain, subdomains, DDNS and Minecraft SRV record |
+| [SSH Hardening](docs/ssh-hardening.md) | Key-based login and SSH security decisions               |
+| [Backup Strategy](docs/backups.md)     | Automated backups and restore testing                    |
+| [Docker](docs/docker.md)               | Container services and Compose structure                 |
+| [Monitoring](docs/monitoring.md)       | Uptime Kuma checks and service visibility                |
+
+## Configuration Examples
+
+This repository includes example configuration files for the main infrastructure components.
+
+### systemd Examples
+
+| Area       | Path                                         | Purpose                                                     |
+| ---------- | -------------------------------------------- | ----------------------------------------------------------- |
+| Minecraft  | [`systemd/minecraft/`](systemd/minecraft/)   | Minecraft service, backup timer and safe restart automation |
+| IONOS DDNS | [`systemd/ionos-ddns/`](systemd/ionos-ddns/) | Dynamic DNS update service and timer                        |
+
+### Docker Compose Examples
+
+| Service              | Path                                         | Purpose                     |
+| -------------------- | -------------------------------------------- | --------------------------- |
+| Uptime Kuma          | [`docker/uptime-kuma/`](docker/uptime-kuma/) | Monitoring dashboard        |
+| Portainer            | [`docker/portainer/`](docker/portainer/)     | Docker management interface |
+| Nginx Test Webserver | [`docker/nginx-test/`](docker/nginx-test/)   | Static webserver test page  |
+
 
 ## What I Learned
 
@@ -109,6 +130,9 @@ This lab is designed as a long-term portfolio project for learning and demonstra
 * [x] SSH key authentication
 * [x] WireGuard VPN
 * [x] DDNS
+* [x] Custom domain setup
+* [x] Minecraft SRV record for clean server address
+* [x] IONOS Dynamic DNS automation
 * [x] Minecraft systemd service
 * [x] Automated backups
 * [x] Backup restore test
@@ -117,7 +141,6 @@ This lab is designed as a long-term portfolio project for learning and demonstra
 * [x] Uptime Kuma monitoring
 * [x] Portainer
 * [x] Nginx test webserver
-* [ ] Custom domain setup
 * [ ] Reverse proxy with HTTPS
 * [ ] Public portfolio/status page
 * [ ] Backup storage on a second disk
