@@ -231,6 +231,47 @@ View Nginx error logs:
 sudo tail -f /var/log/nginx/error.log
 ```
 
+## Logs
+
+Nginx access and error logs are used to inspect public web traffic and troubleshoot problems.
+
+The access log shows incoming requests, requested paths, HTTP status codes, client IPs, referrers and user agents.
+
+Access log:
+
+```bash
+sudo tail -f /var/log/nginx/access.log
+```
+
+The error log shows Nginx errors, failed requests, proxy problems and configuration-related issues.
+
+Error log:
+
+```bash
+sudo tail -f /var/log/nginx/error.log
+```
+
+Useful checks:
+
+```bash
+sudo tail -n 50 /var/log/nginx/access.log
+sudo grep " 404 " /var/log/nginx/access.log
+sudo grep "minecraft.html" /var/log/nginx/access.log
+sudo grep -i "bot" /var/log/nginx/access.log
+```
+
+Example use cases:
+
+* checking whether the public website receives requests
+* finding broken links or missing files
+* identifying HTTP errors such as `404` or `500`
+* spotting bots or automated scanners
+* troubleshooting reverse proxy issues
+
+Log data can include IP addresses and user agents.
+
+These values should be treated carefully and should not be published in the repository.
+
 ## Certificate Renewal
 
 Certbot configures automatic certificate renewal.
