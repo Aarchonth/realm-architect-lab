@@ -4,7 +4,7 @@
 
 A self-hosted infrastructure lab for learning Linux, networking, automation and service hosting.
 
-The lab currently powers a public HTTPS website, a Minecraft server, VPN access, monitoring, backups, Dynamic DNS and Docker-based services.
+The lab currently powers a public HTTPS website, a live German-language client website (Naturhof Bocholt – a real organic farm in Germany), a Minecraft server, VPN access, monitoring, backups, Dynamic DNS and Docker-based services.
 
 ## Live Services
 
@@ -15,6 +15,18 @@ The lab currently powers a public HTTPS website, a Minecraft server, VPN access,
 | VPN Endpoint     | `vpn.realm-architect.dev`       | WireGuard remote access endpoint             |
 
 Administrative services such as SSH, Portainer and Uptime Kuma are kept private behind the local network or WireGuard VPN.
+
+## Featured: Real Client Project
+
+The lab hosts a live production website for **Naturhof Bocholt**, a local organic-vegetable farm in Germany — the first paying client running on this infrastructure.
+
+- Self-service blog and seasonal vegetable calendar the client edits herself (WYSIWYG admin panel, no code required)
+- ASP.NET Core Web API (.NET 8) with JWT-protected admin endpoints + MariaDB
+- Full recipe collection migrated from an **offline legacy WordPress site via the Internet Archive**
+- GDPR compliance: self-hosted fonts, two-click consent for Google Maps, Impressum (§ 5 DDG)
+- German-language site deployed behind the lab's Nginx reverse proxy on its own subdomain
+
+[Full case study →](docs/client-naturhof.md)
 
 ## Project Highlights
 
@@ -165,6 +177,7 @@ Minecraft systemd Service
 | [Docker](docs/docker.md)               | Container services and Compose structure                 |
 | [Monitoring](docs/monitoring.md)       | Uptime Kuma checks and service visibility                |
 | [Backend API](docs/backend.md) | ASP.NET Core API, live service status and Minecraft player status |
+| [Client: Naturhof Bocholt](docs/client-naturhof.md) | Real German-language client website hosted on the lab |
 
 ## Configuration Examples
 
